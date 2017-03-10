@@ -1,5 +1,6 @@
 // configurate paths
 var config = require('./config');
+// create and configure global __server
 require(config.SERVER)(config);
 
 var dispatcher = require(config.DISPATCHER);
