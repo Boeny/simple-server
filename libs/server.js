@@ -6,7 +6,10 @@ var message = function(){
 
 global.__server = {
 	start: function(dispatcher, port, after_start){
-		http.createServer(dispatcher).listen(port || this.config.defaultPort, '127.0.0.1', after_start || message);
+		
+http.createServer(dispatcher).listen(port 
+|| this.config.defaultPort, 'localhost', 
+after_start || message);
 	}
 };
 
@@ -16,7 +19,9 @@ function setHosts(hosts){
 		// set hosts dir if there is no slash at the beginning of the path
 		for (var port in hosts){
 			if (!hosts[port].match(/$[./\\]/))
-				hosts[port] = __server.HOSTS_DIR + hosts[port];
+				
+hosts[port] = __server.HOSTS_DIR + '/' + 
+hosts[port];
 		}
 	}
 	else{// set default port and route

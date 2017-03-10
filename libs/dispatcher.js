@@ -9,6 +9,7 @@ module.exports = function(route){
 	return function(request, response){
 		var pathname = url.parse(request.url).pathname;
 		console.log(`Request for ${pathname} received.`);
+		console.log('!');return;
 		route(pathname, response);
 	};
 };
