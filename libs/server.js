@@ -33,6 +33,27 @@ global.__server = {
 			}
 		);
 	},
+	
+	setHosts: function(){
+		if (Object.keys(this.hosts).length)
+		{
+			var ch, path;
+			
+			for (var port in this.hosts)
+			{
+				path = this.hosts[port];
+				// if there is no "." or "/" at the beginning of the path - set the "home sites dir"/<site>
+				if (path.charAt(0).match(/[.\/]/)) continue;
+				
+				this.hosts[port] = __server.HOSTS_DIR + '/' + path;
+				if (!path.match(/\//)) this.hosts[port] += '/'+this.config.defaultSiteRouter;
+			}
+		}
+		else{// set default port and route
+			this.hosts[__server.config.defaultPort] = __server.ROUTER;
+		}
+	},
+	
 	msg: function(m){
 		console.log(m || 'uncatched msg');
 	},
@@ -45,22 +66,6 @@ global.__server = {
 	}
 };
 
-function setHosts(hosts){
-	if (Object.keys(hosts).length)
-	{
-		// set hosts dir if there is no slash at the beginning of the path
-		var ch;
-		for (var port in hosts){
-			ch = hosts[port].charAt(0);
-			if (ch != '.' && ch !='/')
-				hosts[port] = __server.HOSTS_DIR + '/' + hosts[port];
-		}
-	}
-	else{// set default port and route
-		hosts[__server.config.defaultPort] = __server.ROUTER;
-	}
-}
-
 module.exports = function(config){
 	for (var alias in config){
 		__server[alias] = config[alias];
@@ -69,5 +74,5 @@ module.exports = function(config){
 	__server.config = require(__server.CONFIG_MAIN);
 	__server.hosts = require(__server.CONFIG_HOSTS);
 	
-	setHosts(__server.hosts);
+	__server.setHosts();
 };
