@@ -1,9 +1,10 @@
 /**
  * / - system root
- * ./ - current dir
- * ../ - parent dir
- * <name> - ./<HOSTS_DIR>/<name> dir
+ * ./ - server root
+ * ../ - parent dir of server
+ * <name> - SERVER_ROOT/<HOSTS_DIR>/<name>/index.js
+ * <name>/<file> SERVER_ROOT/<HOSTS_DIR>/<name>/<file>.js
  */
 module.exports = {
-	80: 'simple-project/index'
+	80: 'simple-project'
 };
