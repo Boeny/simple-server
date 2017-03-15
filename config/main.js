@@ -1,3 +1,5 @@
 module.exports = {
-	defaultPort: 80
+	defaultPort: 80,
+	scanHostsDir: true,
+	hostStartingPort: 3001
 };
