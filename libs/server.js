@@ -41,13 +41,17 @@ global.__server = {
 		
 		if (Object.keys(this.hosts).length)
 		{
-			// set hosts dir if there is no slash at the beginning of the path
-			var ch;
-			for (var port in this.hosts){
-				ch = this.hosts[port].charAt(0);
+			var ch, path;
+			
+			for (var port in this.hosts)
+			{
+				path = this.hosts[port];
 				
-				if (ch != '.' && ch !='/')
-					this.hosts[port] = __server.HOSTS_DIR + '/' + this.hosts[port];
+				// if there is no "." or "/" at the beginning of the path - set the "home sites dir"/<site>
+				if (path.charAt(0).match(/[.\/]/)) continue;
+				
+				this.hosts[port] = __server.HOSTS_DIR + '/' + path;
+				if (!path.match(/\//)) this.hosts[port] += '/'+this.config.defaultSiteRouter;
 			}
 		}
 		else{// set default port and route
