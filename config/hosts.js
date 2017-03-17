@@ -6,5 +6,6 @@
  * <name>/<file> SERVER_ROOT/<HOSTS_DIR>/<name>/<file>.js
  */
 module.exports = {
-	80: 'simple-project'
+	//80: '../settlers',
+	80: 'simple-craft',
 };
