@@ -35,6 +35,10 @@ global.__server = {
 	},
 	
 	setHosts: function(){
+		if (this.config.scanHostsDir){
+			
+		}
+		
 		if (Object.keys(this.hosts).length)
 		{
 			var ch, path;
@@ -42,6 +46,7 @@ global.__server = {
 			for (var port in this.hosts)
 			{
 				path = this.hosts[port];
+				
 				// if there is no "." or "/" at the beginning of the path - set the "home sites dir"/<site>
 				if (path.charAt(0).match(/[.\/]/)) continue;
 				
