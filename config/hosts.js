@@ -7,5 +7,5 @@
  */
 module.exports = {
 	//80: '../settlers',
-	80: 'simple-craft',
+	8080: 'p',
 };
