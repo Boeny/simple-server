@@ -1,5 +1,6 @@
 var http = require('http');
-var vm = {}, concat = {};
+var vm = {};
+var concat = {};
 
 global.__server = {
 	start: function(dispatcher, port, after_start){
@@ -7,17 +8,14 @@ global.__server = {
 		http.createServer(dispatcher).listen(port, '127.0.0.1', after_start || (() => this.lmsg(`server was started on port ${port}`)));
 	},
 	requireUrl: function(url, success){
+		this.lmsg('loading remote url: '+url);
+		
 		//vm = require('vm');
-		//concat = require('concat-stream'); // this is just a helper to receive the http payload in a single callback
+		concat = require('concat-stream'); // this is just a helper to receive the http payload in a single callback
 		
-		var url_arr = url.split('//');
-		var host = url_arr[0] ? url_arr[0]+'//' : '';
-		url_arr = url_arr[1].split('/');
-		host += url_arr[0];
+		var url_arr = url.split('//')[1].split('/');
+		var host = url_arr[0];
 		url = '/'+url_arr.filter((s, i) => i > 0);
-		
-		this.lmsg(host);
-		this.lmsg(url);
 		
 		http.get({
 				host: host, 
@@ -26,10 +24,10 @@ global.__server = {
 			},
 			function(res) {
 				res.setEncoding('utf8');
-				success(res);
-				//res.pipe(concat({ encoding: 'string' }, function(remoteSrc) {
+				res.pipe(concat({ encoding: 'string' }, function(remoteSrc) {
+					success(remoteSrc);
 				//	vm.runInThisContext(remoteSrc, 'remote_modules/hello.js');
-				//}));
+				}));
 			}
 		);
 	},
