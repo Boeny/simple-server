@@ -1,4 +1,7 @@
 {
-	"name": "simple-server",
-	"version": "0.1.3"
+  "name": "simple-server",
+  "version": "0.1.3",
+  "dependencies": {
+    "concat-stream": "^1.6.0"
+  }
 }
