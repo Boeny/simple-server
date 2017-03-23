@@ -69,7 +69,7 @@ global.__server = {
 	}
 };
 
-module.exports = function(config){
+module.exports = function(config: object){
 	for (var alias in config){
 		__server[alias] = config[alias];
 	}
