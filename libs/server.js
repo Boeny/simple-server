@@ -57,6 +57,9 @@ global.__server = {
 		}
 	},
 	
+	e: function(msg){
+		throw new Error(msg);
+	},
 	msg: function(m){
 		console.log(m || 'uncatched msg');
 	},
@@ -69,7 +72,7 @@ global.__server = {
 	}
 };
 
-module.exports = function(config: object){
+module.exports = function(config){
 	for (var alias in config){
 		__server[alias] = config[alias];
 	}
