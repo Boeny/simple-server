@@ -57,8 +57,11 @@ global.__server = {
 		}
 	},
 	
+	e: function(msg){
+		throw new Error(msg);
+	},
 	msg: function(m){
-		console.log(m || 'uncatched msg');
+		console.log(m || 'empty msg');
 	},
 	line: function(){
 		console.log('');
