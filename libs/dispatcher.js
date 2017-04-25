@@ -36,7 +36,6 @@ module.exports = function(route){
 						v = chunk[i].split('=');
 						__server.POST[v[0]] = v[1];
 					}
-					__server.POST qs.parse(chunk);
 				});
 				
 				request.on('end', () => {
