@@ -61,7 +61,7 @@ global.__server = {
 		throw new Error(msg);
 	},
 	msg: function(m){
-		console.log(m || 'uncatched msg');
+		console.log(m);
 	},
 	line: function(){
 		console.log('');
