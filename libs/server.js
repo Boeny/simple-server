@@ -35,7 +35,7 @@ global.__server = {
 		throw new Error(msg);
 	},
 	msg: function(m){
-		console.log(m || 'uncatched msg');
+		console.log(m || 'empty msg');
 	},
 	line: function(){
 		console.log('');
@@ -45,8 +45,12 @@ global.__server = {
 		this.line();
 	},
 	
-	send: function(response, code){
-		response.writeHead(code, http.STATUS_CODES[code] || 'unknown code', )
+	end: function(msg){
+		this.response.end(msg || '');
+	},
+	send: function(code, msg){
+		this.response.writeHead(code, http.STATUS_CODES[code] || 'unknown code', {'Content-type': 'text/html'});
+		this.end(msg);
 	}
 };
 

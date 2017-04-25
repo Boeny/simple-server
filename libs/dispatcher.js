@@ -5,10 +5,12 @@
  */
 module.exports = function(route){
 	return function(request, response){
-		var params = require('url').parse(request.url, true);
+		__server.request = request;
+		__server.response = response;
 		
+		var params = require('url').parse(request.url, true);
 		var pathname = params.pathname;
-		console.log(`Request for ${pathname} received.`);
+		__server.msg(`Request for ${pathname} received.`);
 		
 		switch (request.method){
 			case 'GET':
@@ -21,9 +23,10 @@ module.exports = function(route){
 				
 				request.on('data', (chunk) => {
 					chunk = chunk.toString();
+					
 					if (chunk.length > 1e6) {
 						__server.send(413);
-						request.connection.destroy();
+						return;
 					}
 					
 					chunk = chunk.split('&');
