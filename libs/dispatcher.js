@@ -12,7 +12,10 @@ module.exports = function(route){
 		
 		request.on('data', (c) => {
 			var pairs = c.toString().split('&');
-			
+			var pair;
+			for (var i in pairs){
+				pair = pairs[i].split('=');
+			this.POST[pair[0]] = pair[1];
 		});
 		
 		request.on('end', () => {
