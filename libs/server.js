@@ -1,42 +1,12 @@
 var http = require('http');
-var vm = {};
-var concat = {};
 
 global.__server = {
 	start: function(dispatcher, port, after_start){
 		port = port || this.config.defaultPort;
 		http.createServer(dispatcher).listen(port, '127.0.0.1', after_start || (() => this.lmsg(`server was started on port ${port}`)));
 	},
-	requireUrl: function(url, success){
-		this.lmsg('loading remote url: '+url);
-		
-		//vm = require('vm');
-		concat = require('concat-stream'); // this is just a helper to receive the http payload in a single callback
-		
-		var url_arr = url.split('//')[1].split('/');
-		var host = url_arr[0];
-		url = '/'+url_arr.filter((s, i) => i > 0);
-		
-		http.get({
-				host: host, 
-				port: 80, 
-				path: url
-			},
-			function(res) {
-				res.setEncoding('utf8');
-				res.pipe(concat({ encoding: 'string' }, function(remoteSrc) {
-					success(remoteSrc);
-				//	vm.runInThisContext(remoteSrc, 'remote_modules/hello.js');
-				}));
-			}
-		);
-	},
 	
 	setHosts: function(){
-		if (this.config.scanHostsDir){
-			
-		}
-		
 		if (Object.keys(this.hosts).length)
 		{
 			var ch, path;
@@ -57,11 +27,15 @@ global.__server = {
 		}
 	},
 	
+	read: function(path, encoding){
+		return require('fs').readFileSync(path+'.js', encoding || 'utf-8');
+	},
+	
 	e: function(msg){
 		throw new Error(msg);
 	},
 	msg: function(m){
-		console.log(m);
+		console.log(m || 'empty msg');
 	},
 	line: function(){
 		console.log('');
@@ -69,6 +43,14 @@ global.__server = {
 	lmsg: function(m){
 		this.msg(m);
 		this.line();
+	},
+	
+	end: function(msg){
+		this.response.end(msg || '');
+	},
+	send: function(code, msg){
+		this.response.writeHead(code, http.STATUS_CODES[code] || 'unknown code', {'Content-type': 'text/html'});
+		this.end(msg);
 	}
 };
 

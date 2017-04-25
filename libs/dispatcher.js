@@ -3,12 +3,48 @@
  * @param {function} route
  * @returns {function} handler on request event
  */
-var url = require('url');
-
 module.exports = function(route){
 	return function(request, response){
-		var pathname = url.parse(request.url).pathname;
-		console.log(`Request for ${pathname} received.`);
-		route(pathname, response);
+		__server.request = request;
+		__server.response = response;
+		
+		var params = require('url').parse(request.url, true);
+		var pathname = params.pathname;
+		__server.msg(`Request for ${pathname} received.`);
+		
+		switch (request.method){
+			case 'GET':
+				__server.GET = params.query;
+				route(pathname, response);
+				break;
+			
+			case 'POST':
+				__server.POST = {};
+				
+				request.on('data', (chunk) => {
+					chunk = chunk.toString();
+					
+					if (chunk.length > 1e6) {
+						__server.send(413);
+						return;
+					}
+					
+					chunk = chunk.split('&');
+					var v;
+					
+					for (var i in chunk){
+						v = chunk[i].split('=');
+						__server.POST[v[0]] = v[1];
+					}
+				});
+				
+				request.on('end', () => {
+					route(pathname, response);
+				});
+				break;
+			
+			default:
+				__server.send(405);
+		}
 	};
 };
