@@ -10,7 +10,9 @@ module.exports = function(route){
 		
 		var params = require('url').parse(request.url, true);
 		var pathname = params.pathname;
-		__server.msg(`Request for ${pathname} received.`);
+		//__server.msg(`Request for ${pathname} received.`);
+		
+		__server.is_mobile = in_str(['Android','iOS','iPhone','iPad'], request.headers['user-agent']);
 		
 		switch (request.method){
 			case 'GET':
