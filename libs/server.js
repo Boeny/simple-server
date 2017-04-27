@@ -31,11 +31,14 @@ global.__server = {
 		return require('fs').readFileSync(path+'.js', encoding || 'utf-8');
 	},
 	
-	e: function(msg){
-		throw new Error(msg);
+	json: function(o){
+		return typeof o == 'object' ? JSON.stringify(o) : o;
+	},
+	e: function(m){
+		throw new Error(this.json(m));
 	},
 	msg: function(m){
-		console.log(m || 'empty msg');
+		console.log(m ? this.json(m) : 'empty msg');
 	},
 	line: function(){
 		console.log('');
