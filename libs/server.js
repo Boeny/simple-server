@@ -72,8 +72,9 @@ global.__server = {
 	e: function(m){
 		throw new Error(this.json(m));
 	},
-	msg: function(m){
-		if (this.show_msg) console.log(m || 'empty msg');
+	
+	msg: function(){
+		if (this.show_msg) console.log.apply(null, arguments);
 	},
 	line: function(){
 		if (this.show_msg) console.log('');
