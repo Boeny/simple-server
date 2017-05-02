@@ -1,4 +1,8 @@
 {
-  "name": "simple-server",
-  "version": "0.1.4"
+	"name": "simple-server",
+	"version": "0.1.4",
+	
+	"dependencies": {
+		"cluster": "^0.7.7"
+	}
 }
