@@ -6,5 +6,5 @@
  * <name>/<file> SERVER_ROOT/<HOSTS_DIR>/<name>/<file>.js
  */
 module.exports = {
-	80: 'simple-craft'
+	80: '../craft'
 };
