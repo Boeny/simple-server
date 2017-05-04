@@ -1,5 +1,4 @@
 /config/
-!/config/main.js
 /home/
 /node_modules/
 npm-debug.log

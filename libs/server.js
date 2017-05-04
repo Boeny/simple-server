@@ -1,4 +1,4 @@
-var http = require('http');
+const http = require('http');
 
 global.__server = {
 	show_msg: true,

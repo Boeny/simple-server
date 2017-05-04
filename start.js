@@ -1,14 +1,26 @@
 // configurate paths
-var config = require('./config');
+const config = require('./config');
 
 // create and configure global __server
 require(config.SERVER)(config);
 
-var dispatcher = require(config.DISPATCHER);
-var router;
+var cluster = require('cluster');
 
-// start routes from different locations (web sites)
-for (var port in __server.hosts){
-	router = require(__server.hosts[port]);
-	__server.start(dispatcher(router), port);
+if (cluster.isMaster){
+	var ports = Object.keys(__server.hosts);
+	
+	for (var i=0; i<ports.length; i++){
+		cluster.fork();
+		delete __server.hosts[ports[i]];
+	}
+	
+	cluster.on('exit', (worker, code, signal) => {
+		__server.msg('worker %d died', worker.process.pid);
+	});
 }
+else{
+	const dispatcher = require(config.DISPATCHER);
+	const router = require(__server.hosts[msg.port]);
+	__server.start(dispatcher(router), msg.port);
+}
+
