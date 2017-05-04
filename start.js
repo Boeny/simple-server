@@ -1,17 +1,15 @@
 // configurate paths
 const config = require('./config');
+const cluster = require('cluster');
 
 // create and configure global __server
-require(config.SERVER)(config);
-
-var cluster = require('cluster');
+require(config.SERVER)(config, cluster.isMaster);
 
 if (cluster.isMaster){
 	var ports = Object.keys(__server.hosts);
 	
 	for (var i=0; i<ports.length; i++){
-		cluster.fork();
-		delete __server.hosts[ports[i]];
+		cluster.fork({port: ports[i]});
 	}
 	
 	cluster.on('exit', (worker, code, signal) => {
@@ -20,7 +18,7 @@ if (cluster.isMaster){
 }
 else{
 	const dispatcher = require(config.DISPATCHER);
-	const router = require(__server.hosts[msg.port]);
-	__server.start(dispatcher(router), msg.port);
+	const port = process.env.port;
+	const router = require(__server.hosts[port]);
+	__server.start(dispatcher(router), port);
 }
-

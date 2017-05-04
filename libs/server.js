@@ -21,12 +21,14 @@ global.__server = {
 	},
 	
 	setHosts: function(){
-		if (Object.keys(this.hosts).length)
+		var ports = Object.keys(this.hosts);
+		if (ports.length)
 		{
-			var ch, path;
+			var port, ch, path;
 			
-			for (var port in this.hosts)
+			for (var i=0; i<ports.length; i++)
 			{
+				port = ports[i];
 				path = this.hosts[port];
 				
 				// if there is no "." or "/" at the beginning of the path - set the "home sites dir"/<site>
@@ -93,7 +95,7 @@ global.__server = {
 	}
 };
 
-module.exports = function(config){
+module.exports = function(config, is_master_process){
 	for (var alias in config){
 		__server[alias] = config[alias];
 	}

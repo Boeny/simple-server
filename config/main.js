@@ -1,8 +1,9 @@
 module.exports = {
 	defaultPort: 80,
-	defaultSiteRouter: '',
+	defaultSiteRouter: 'index',
 	
-	homeDir: '../craft/workers'
-	scanHomeDir: true,
+	// not working yet
+	homeDir: 'home',
+	scanHomeDir: false,
 	hostStartingPort: 3001
 };
