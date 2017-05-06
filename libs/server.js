@@ -51,8 +51,9 @@ global.__server = {
 		this.POST = {};
 		
 		this.request.on('data', (chunk) => {
+			if (typeof chunk == '')
 			chunk = chunk.toString();
-			
+
 			if (chunk.length > 1e7) {// 1*10^7 byte (9.5 Mb)
 				this.send(413);
 				return;
