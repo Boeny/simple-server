@@ -51,12 +51,17 @@ global.__server = {
 		this.POST = {};
 		
 		this.request.on('data', (chunk) => {
+			this.msg(chunk);
 			chunk = chunk.toString();
+			this.msg(chunk);
 			
 			if (chunk.length > 1e7) {// 1*10^7 byte (9.5 Mb)
 				this.send(413);
 				return;
 			}
+			
+			if (chunk.indexOf('&') == -1)
+				return this.POST = JSON.parse(chunk);
 			
 			chunk = chunk.split('&');
 			var v;
